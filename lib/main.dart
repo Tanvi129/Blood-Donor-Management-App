@@ -1,4 +1,5 @@
 import 'package:blood_donor/screens/LoginScreen.dart';
+import 'package:blood_donor/screens/SignUP.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.grey,
       ),
-      home: const LoginScreen(),
+      home: const SignUPScreen(),
     );
   }
 }

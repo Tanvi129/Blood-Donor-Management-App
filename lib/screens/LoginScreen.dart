@@ -58,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                       CustomTextField(
                         controller: emailController,
                         hintText: "Email",
-                        keyboardType: TextInputType.datetime,
+                        keyboardType: TextInputType.emailAddress,
                         obscureText: false,
                       ),
                       const SizedBox(
