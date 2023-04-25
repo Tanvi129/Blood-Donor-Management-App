@@ -92,6 +92,22 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                       list: genderlList,
                       hintext: "Choose Sex"),
                 ],
+                
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                alignment: Alignment.center,
+                 padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.grey,
+                
+                ),
+                height: 50,
+                child: const Text("Select Date and Time",
+                style: TextStyle(fontSize: 25),),
               )
             ],
           ),
