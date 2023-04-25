@@ -32,7 +32,7 @@ TextInputType keyboardType;
                           hintStyle: const TextStyle(
                             fontSize: 25,
                 
-                            color: Colors.black
+                            color: Colors.grey
                           ),
                             border: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(15)),
