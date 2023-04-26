@@ -23,14 +23,14 @@ TextInputType keyboardType;
                         controller: controller,
                         style: const TextStyle(
                           color: Colors.black,
-                          fontSize: 25,
+                          fontSize: 20,
                         ),
                         decoration:  InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
                           hintText: hintText,
                           hintStyle: const TextStyle(
-                            fontSize: 25,
+                            fontSize: 20,
                 
                             color: Colors.grey
                           ),

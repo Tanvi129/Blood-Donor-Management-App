@@ -2,6 +2,10 @@ import 'package:blood_donor/BottomNavBar.dart';
 import 'package:blood_donor/screens/LoginScreen.dart';
 import 'package:blood_donor/screens/SignUP.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
+
+
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +33,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.grey,
       ),
       home: const BotttomNavBar(),
+      localizationsDelegates: [
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [Locale('en', 'IN')], //, Locale('pt', 'BR')],
     );
+    
   }
 }
 

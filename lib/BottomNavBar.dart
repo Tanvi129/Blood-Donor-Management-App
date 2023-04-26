@@ -18,6 +18,7 @@ class _BotttomNavBarState extends State<BotttomNavBar> {
     return Scaffold(
       body: _returnScreen(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
+        selectedFontSize: 12,
         backgroundColor: Colors.grey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

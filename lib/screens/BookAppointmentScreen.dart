@@ -1,6 +1,9 @@
 import 'package:blood_donor/widgets/dropDownList.dart';
 import 'package:blood_donor/widgets/textFormField.dart';
 import 'package:flutter/material.dart';
+import 'package:date_time_picker/date_time_picker.dart';
+import 'package:intl/intl.dart';
+
 
 const List<String> hospitalList = <String>[
   'Apollo Blood Bank',
@@ -25,6 +28,22 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
   final nameController = TextEditingController();
 
   final phoneController = TextEditingController();
+  String _valueChanged3 = '';
+  String _valueToValidate3 = '';
+  String _valueSaved3 = '';
+  late TextEditingController _controller3;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Intl.defaultLocale = 'pt_BR';
+    _controller3 = TextEditingController(text: DateTime.now().toString());
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +84,8 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               DropDownList(
                   dropDownValue: hospitalDropdownValue,
                   list: hospitalList,
-                  unboundedWidth: true,
+                  width: MediaQuery.of(context).size.width,
+                  unboundedWidth: false,
                   hintext: "Select Blood Bank Location"),
               const SizedBox(
                 height: 20,
@@ -85,12 +105,15 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                       dropDownValue: bloodlDropdownValue,
                       list: bloodGrouplList,
                       unboundedWidth: false,
+                      width: 160,
                       hintext: "Bllood Group"),
                   DropDownList(
                       dropDownValue: genderlDropdownValue,
                       unboundedWidth: false,
                       list: genderlList,
+                      width: 160,
                       hintext: "Choose Sex"),
+                      
                 ],
                 
               ),
@@ -107,8 +130,36 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 ),
                 height: 50,
                 child: const Text("Select Date and Time",
-                style: TextStyle(fontSize: 25),),
-              )
+                style: TextStyle(fontSize: 20),),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              DateTimePicker(
+              
+                type: DateTimePickerType.date,
+                //dateMask: 'yyyy/MM/dd',
+                controller: _controller3,
+                style: TextStyle(
+                  color: Colors.white,
+                  // backgroundColor: Colors.white,
+                  decorationColor: Colors.white,
+                  fontSize: 25,
+                ),
+                //initialValue: _initialValue,
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2100),
+                icon: Icon(Icons.event , color: Colors.white, size: 25,),
+                dateLabelText: 'Date',
+                locale: Locale('en', 'IN'),
+                onChanged: (val) => setState(() => _valueChanged3 = val),
+                validator: (val) {
+                  setState(() => _valueToValidate3 = val ?? '');
+                  return null;
+                },
+                onSaved: (val) => setState(() => _valueSaved3 = val ?? ''),
+              ),
+
             ],
           ),
         ),
