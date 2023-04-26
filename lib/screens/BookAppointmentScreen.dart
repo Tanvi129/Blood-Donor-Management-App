@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:intl/intl.dart';
 
-
 const List<String> hospitalList = <String>[
   'Apollo Blood Bank',
   'SRM Blood Bank',
@@ -12,7 +11,16 @@ const List<String> hospitalList = <String>[
   'MTS Blood Bank'
 ];
 const List<String> genderlList = <String>["Male", "Female", "Other"];
-const List<String> bloodGrouplList = <String>["A+", "A-", "B+", "B-", "O+" , "O-" , "AB+" , "AB-"];
+const List<String> bloodGrouplList = <String>[
+  "A+",
+  "A-",
+  "B+",
+  "B-",
+  "O+",
+  "O-",
+  "AB+",
+  "AB-"
+];
 
 class BookAppointmentScreen extends StatefulWidget {
   BookAppointmentScreen({Key? key}) : super(key: key);
@@ -32,7 +40,15 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
   String _valueToValidate3 = '';
   String _valueSaved3 = '';
   late TextEditingController _controller3;
-
+  var timeSlots = [
+    "10:00 AM",
+    "11:00 AM",
+    "11:30 AM",
+    "12:30 PM",
+    "1:45 PM",
+    "2:00 PM",
+    "3:15 PM"
+  ];
 
   @override
   void initState() {
@@ -40,10 +56,15 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
     super.initState();
     Intl.defaultLocale = 'pt_BR';
     _controller3 = TextEditingController(text: DateTime.now().toString());
-
   }
 
+  int _selectedIndex = 0;
+  _onSelected(int index) {
 
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +85,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
         ),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(
                 height: 20,
@@ -113,30 +135,28 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                       list: genderlList,
                       width: 160,
                       hintext: "Choose Sex"),
-                      
                 ],
-                
+              ),
+              const SizedBox(
+                height: 20,
               ),
               const SizedBox(
                 height: 20,
               ),
               Container(
                 alignment: Alignment.center,
-                 padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.grey,
-                
                 ),
                 height: 50,
-                child: const Text("Select Date and Time",
-                style: TextStyle(fontSize: 20),),
-              ),
-              const SizedBox(
-                height: 20,
+                child: const Text(
+                  "Select Date and Time",
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
               DateTimePicker(
-              
                 type: DateTimePickerType.date,
                 //dateMask: 'yyyy/MM/dd',
                 controller: _controller3,
@@ -149,7 +169,11 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 //initialValue: _initialValue,
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2100),
-                icon: Icon(Icons.event , color: Colors.white, size: 25,),
+                icon: Icon(
+                  Icons.event,
+                  color: Colors.white,
+                  size: 25,
+                ),
                 dateLabelText: 'Date',
                 locale: Locale('en', 'IN'),
                 onChanged: (val) => setState(() => _valueChanged3 = val),
@@ -159,7 +183,68 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 },
                 onSaved: (val) => setState(() => _valueSaved3 = val ?? ''),
               ),
-
+              const SizedBox(
+                height: 20,
+              ),
+              Flexible(
+                fit: FlexFit.loose,
+                child: GridView.builder(
+                  
+                    shrinkWrap: true,
+                    
+                    gridDelegate:
+                         SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: MediaQuery.of(context).size.width /
+              (MediaQuery.of(context).size.height / 4),
+                    ),
+                    itemCount: timeSlots.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                setState(() {
+                  // Toggle light when tapped.
+                   _onSelected(index);
+                });
+              },
+                        child: Container(
+                          margin: EdgeInsets.all(8),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: _selectedIndex != null && _selectedIndex == index
+                                ? Colors.blue
+                                : Colors.white,
+                          ),
+                          height: 10,
+                          child: Center(child: Text(timeSlots[index])),
+                        ),
+                      );
+                    }),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                width: 250,
+                child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text(
+                            "Book Appointment",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          style: ButtonStyle(
+                
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.white),
+                              fixedSize: MaterialStateProperty.all<Size>(
+                                  const Size(150, 50)),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ))),
+                        ),
+              ),
             ],
           ),
         ),
