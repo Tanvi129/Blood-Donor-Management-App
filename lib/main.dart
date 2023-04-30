@@ -32,13 +32,20 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.grey,
       ),
-      home: const BotttomNavBar(),
+      
+      routes: {
+        "/" : ((context) => LoginScreen()),
+        "/signup" : ((context) => SignUPScreen()),
+        "/navbar" : ((context) => BotttomNavBar()),
+
+      },
       localizationsDelegates: [
         GlobalWidgetsLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [Locale('en', 'IN')], //, Locale('pt', 'BR')],
+      supportedLocales: [Locale('en', 'IN')],
+       //, Locale('pt', 'BR')],
     );
     
   }

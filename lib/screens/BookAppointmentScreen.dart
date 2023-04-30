@@ -60,7 +60,6 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
 
   int _selectedIndex = 0;
   _onSelected(int index) {
-
     setState(() {
       _selectedIndex = index;
     });
@@ -189,30 +188,28 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               Flexible(
                 fit: FlexFit.loose,
                 child: GridView.builder(
-                  
                     shrinkWrap: true,
-                    
-                    gridDelegate:
-                         SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       childAspectRatio: MediaQuery.of(context).size.width /
-              (MediaQuery.of(context).size.height / 4),
+                          (MediaQuery.of(context).size.height / 4),
                     ),
                     itemCount: timeSlots.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-                setState(() {
-                  // Toggle light when tapped.
-                   _onSelected(index);
-                });
-              },
+                          setState(() {
+                            // Toggle light when tapped.
+                            _onSelected(index);
+                          });
+                        },
                         child: Container(
                           margin: EdgeInsets.all(8),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            color: _selectedIndex != null && _selectedIndex == index
+                            color: _selectedIndex != null &&
+                                    _selectedIndex == index
                                 ? Colors.blue
                                 : Colors.white,
                           ),
@@ -228,22 +225,34 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               SizedBox(
                 width: 250,
                 child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text(
-                            "Book Appointment",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          style: ButtonStyle(
-                
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.white),
-                              fixedSize: MaterialStateProperty.all<Size>(
-                                  const Size(150, 50)),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                              ))),
-                        ),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              title: Text('Appointment Book'),
+                              
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'OK'),
+                                  child: Text('OK'),
+                                ),
+                              ]);
+                        });
+                  },
+                  child: const Text(
+                    "Book Appointment",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      fixedSize:
+                          MaterialStateProperty.all<Size>(const Size(150, 50)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ))),
+                ),
               ),
             ],
           ),

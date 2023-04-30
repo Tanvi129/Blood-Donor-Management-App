@@ -137,7 +137,22 @@ class SignUPScreen extends StatelessWidget {
                         height: 30,
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              title: const Text('Conratulations !'),
+                              content: const Text('You are signed up !'),
+                              
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'OK'),
+                                  child: Text('OK'),
+                                ),
+                              ]);
+                        });
+                        },
                         child: const Text(
                           "Sign Up",
                           style: TextStyle(fontSize: 20),

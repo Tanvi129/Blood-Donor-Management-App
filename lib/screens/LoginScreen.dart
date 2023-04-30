@@ -74,7 +74,9 @@ class LoginScreen extends StatelessWidget {
                         height: 20,
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/navbar");
+                        },
                         child: const Text(
                           "Log In",
                           style: TextStyle(fontSize: 20),
@@ -105,7 +107,9 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: (() {}),
+                    onPressed: (() {
+                      Navigator.pushNamed(context, "/signup");
+                    }),
                     child: const Text(
                       "Sign Up",
                       style: TextStyle(
@@ -117,7 +121,9 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
               TextButton(
-                onPressed: (() {}),
+                onPressed: (() {
+                  
+                }),
                 child: const Text(
                   "Forgot Password ?",
                   style: TextStyle(
