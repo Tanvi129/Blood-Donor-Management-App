@@ -1,5 +1,9 @@
+import 'package:blood_donor/widgets/appListTile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer';
 
 class MyRecordsScreen extends StatefulWidget {
   MyRecordsScreen({Key? key}) : super(key: key);
@@ -18,12 +22,13 @@ class _MyRecordsScreenState extends State<MyRecordsScreen> {
     ["19 August, 2023", "4:40 PM", "SRM Blood Bank"],
     ["22 September, 2023", "1:25 PM", "Apollo Blood Bank"]
   ];
-   var pastRecords = [
+  var pastRecords = [
     ["13 March, 2023", "3:00 PM", "SRM Blood Bank"],
     ["15 February, 2023", "2:25 PM", "MAX Blood Bank"],
     ["16 January, 2023", "1:00 PM", "Apollo Blood Bank"],
-   
   ];
+  final Stream<QuerySnapshot> _usersStream =
+      FirebaseFirestore.instance.collection("pastAPP").snapshots();
 
   @override
   void initState() {
@@ -31,7 +36,6 @@ class _MyRecordsScreenState extends State<MyRecordsScreen> {
     super.initState();
     displayList = upcomingRecords;
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +73,11 @@ class _MyRecordsScreenState extends State<MyRecordsScreen> {
                       setState(() {
                         groupValue = value;
                       });
-                      if (groupValue == 0){
+                      if (groupValue == 0) {
                         setState(() {
                           displayList = upcomingRecords;
                         });
-
-                      }else{
+                      } else {
                         setState(() {
                           displayList = pastRecords;
                         });
@@ -86,43 +89,25 @@ class _MyRecordsScreenState extends State<MyRecordsScreen> {
               ),
               Flexible(
                   fit: FlexFit.loose,
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: displayList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          margin: const EdgeInsets.all(8),
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.white,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                   displayList[index][0],
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                  Text(
-                                    displayList[index][1],
-                                    style: const TextStyle(fontSize: 16),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                 displayList[index][2],
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ],
-                          ),
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance.collection("pastAPP").snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          debugPrint("Error ${snapshot.error}");
+                          print(snapshot.data);
+
+                          return Text('Something went wrong');
+                        }
+
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Text("Loading");
+                        }
+                        return ListView(
+                          children: snapshot.data!.docs
+                              .map((doc) => new AppListTile(date: doc["date"], time: doc["time"], loc: doc["loc"]))
+                              .toList(),
                         );
                       }))
             ],
@@ -139,5 +124,10 @@ class _MyRecordsScreenState extends State<MyRecordsScreen> {
         style: TextStyle(fontSize: 22, color: Colors.black),
       ),
     );
+  }
+  getExpenseItems(AsyncSnapshot<QuerySnapshot> snapshot) {
+    return snapshot.data!.docs
+        .map((doc) => new AppListTile(date: doc["date"], time: doc["time"], loc: doc["loc"]))
+        .toList();
   }
 }
