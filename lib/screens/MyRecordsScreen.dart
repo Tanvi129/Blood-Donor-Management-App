@@ -14,7 +14,7 @@ class MyRecordsScreen extends StatefulWidget {
 
 class _MyRecordsScreenState extends State<MyRecordsScreen> {
   int? groupValue = 0;
-  var displayList = [];
+ 
   var upcomingRecords = [
     ["13 May, 2023", "3:00 PM", "SRM Blood Bank"],
     ["15 June, 2023", "2:25 PM", "MAX Blood Bank"],
@@ -27,14 +27,18 @@ class _MyRecordsScreenState extends State<MyRecordsScreen> {
     ["15 February, 2023", "2:25 PM", "MAX Blood Bank"],
     ["16 January, 2023", "1:00 PM", "Apollo Blood Bank"],
   ];
-  final Stream<QuerySnapshot> _usersStream =
+  final Stream<QuerySnapshot> _upStream =
+      FirebaseFirestore.instance.collection("upAPP").snapshots();
+    final Stream<QuerySnapshot> _pastStream =
       FirebaseFirestore.instance.collection("pastAPP").snapshots();
+       Stream<QuerySnapshot> displayList =
+      FirebaseFirestore.instance.collection("upAPP").snapshots();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    displayList = upcomingRecords;
+    displayList = _upStream;
   }
 
   @override
@@ -75,11 +79,11 @@ class _MyRecordsScreenState extends State<MyRecordsScreen> {
                       });
                       if (groupValue == 0) {
                         setState(() {
-                          displayList = upcomingRecords;
+                          displayList = _upStream;
                         });
                       } else {
                         setState(() {
-                          displayList = pastRecords;
+                          displayList = _pastStream;
                         });
                       }
                     }),
@@ -90,7 +94,7 @@ class _MyRecordsScreenState extends State<MyRecordsScreen> {
               Flexible(
                   fit: FlexFit.loose,
                   child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance.collection("pastAPP").snapshots(),
+                      stream: displayList,
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasError) {
@@ -105,9 +109,8 @@ class _MyRecordsScreenState extends State<MyRecordsScreen> {
                           return Text("Loading");
                         }
                         return ListView(
-                          children: snapshot.data!.docs
-                              .map((doc) => new AppListTile(date: doc["date"], time: doc["time"], loc: doc["loc"]))
-                              .toList(),
+                          shrinkWrap: true,
+                          children: getExpenseItems(snapshot)
                         );
                       }))
             ],

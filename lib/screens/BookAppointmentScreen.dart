@@ -3,6 +3,9 @@ import 'package:blood_donor/widgets/textFormField.dart';
 import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer';
 
 const List<String> hospitalList = <String>[
   'Apollo Blood Bank',
@@ -49,6 +52,20 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
     "2:00 PM",
     "3:15 PM"
   ];
+  var selectedtime = "!0:00 AM";
+  CollectionReference users = FirebaseFirestore.instance.collection('upAPP');
+
+  Future<void> addUser(String date , String time , String loc) {
+      // Call the user's CollectionReference to add a new user
+      return users
+          .add({
+            'date': date, // John Doe
+            'time': time, // Stokes and Sons
+            'loc': loc // 42
+          })
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failed to add user: $error"));
+    }
 
   @override
   void initState() {
@@ -200,6 +217,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                         onTap: () {
                           setState(() {
                             // Toggle light when tapped.
+                            selectedtime = timeSlots[index];
                             _onSelected(index);
                           });
                         },
@@ -226,11 +244,14 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 width: 250,
                 child: ElevatedButton(
                   onPressed: () {
+                    addUser(_controller3.text
+                    , selectedtime, "SRM BLOOD BANK");
+
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                              title: Text('Appointment Book'),
+                              title: Text('Appointment Booked'),
                               
                               actions: <Widget>[
                                 TextButton(

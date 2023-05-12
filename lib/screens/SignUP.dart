@@ -142,7 +142,7 @@ class SignUPScreen extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                              title: const Text('Conratulations !'),
+                              title: const Text('Congratulations !'),
                               content: const Text('You are signed up !'),
                               
                               actions: <Widget>[
